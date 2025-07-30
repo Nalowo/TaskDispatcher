@@ -1,18 +1,27 @@
 #pragma once
 #include "queue/queue.hpp"
 
+#include <condition_variable>
+#include <mutex>
+#include <vector>
+#include <queue>
+
 namespace dispatcher::queue {
 
 class BoundedQueue : public IQueue {
-    // здесь ваш код
+    using task = std::function<void()>;
+    using container = std::queue<task>;
 public:
-    explicit BoundedQueue(int capacity);
+    explicit BoundedQueue(size_t capacity);
+    void push(task task) override;
+    std::optional<task> try_pop() override;
 
-    void push(std::function<void()> task) override;
-
-    std::optional<std::function<void()>> try_pop() override;
-
-    ~BoundedQueue() override;
+private:
+    container queue_;
+    std::mutex mtx_;
+    std::condition_variable cv_empty_;
+    std::condition_variable cv_full_;
+    size_t capacity_;
 };
 
 }  // namespace dispatcher::queue
