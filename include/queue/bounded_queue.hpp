@@ -19,7 +19,6 @@ public:
 private:
     container queue_;
     std::mutex mtx_;
-    std::condition_variable cv_empty_;
     std::condition_variable cv_full_;
     size_t capacity_;
 };
