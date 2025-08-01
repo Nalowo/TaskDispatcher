@@ -2,3 +2,6 @@
 CMakeUserPresets.json
 *build/
 /.vscode
+/.devcontainer/*
+/combine_sources.sh
+/all_code.txt

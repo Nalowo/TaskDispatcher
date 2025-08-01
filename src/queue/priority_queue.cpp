@@ -13,9 +13,11 @@ namespace dispatcher::queue {
         }
     }
 
-    void PriorityQueue::push(TaskPriority priority, std::function<void()> task)
+    void PriorityQueue::push(TaskPriority priority, PriorityQueue::task task)
     {
-        if (static_cast<int>(priority) >= static_cast<int>(TaskPriority::Count))
+        if ((static_cast<int>(priority) < 0) 
+            || (static_cast<int>(priority) >= static_cast<int>(TaskPriority::Count))
+            || (queues_[static_cast<int>(priority)] == nullptr))
             throw std::invalid_argument("Wrong priority index");
         {
             std::lock_guard<std::mutex> lk(mtx_);

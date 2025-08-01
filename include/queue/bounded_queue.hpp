@@ -9,9 +9,10 @@
 namespace dispatcher::queue {
 
 class BoundedQueue : public IQueue {
+public:
     using task = std::function<void()>;
     using container = std::queue<task>;
-public:
+
     explicit BoundedQueue(size_t capacity);
     void push(task task) override;
     std::optional<task> try_pop() override;

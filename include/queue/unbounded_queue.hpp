@@ -7,12 +7,13 @@
 namespace dispatcher::queue {
 
 class UnboundedQueue : public IQueue {
+public:
     using task = std::function<void()>;
     using container = std::queue<task>;
-public:
+
     explicit UnboundedQueue();
 
-    void push(std::function<void()> task) override;
+    void push(task task) override;
 
     std::optional<task> try_pop() override;
 

@@ -16,9 +16,11 @@ namespace dispatcher::queue {
 
 class PriorityQueue {
 public:
+    using task = std::function<void()>;
+
     explicit PriorityQueue(const std::unordered_map<TaskPriority, QueueOptions>& opts);
 
-    void push(TaskPriority priority, std::function<void()> task);
+    void push(TaskPriority priority, task task);
     // block on pop until shutdown is called
     // after that return std::nullopt on empty queue
     std::optional<std::function<void()>> pop();
