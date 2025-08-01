@@ -1,12 +1,25 @@
 #include "queue/unbounded_queue.hpp"
 
-#include <functional>
-#include <mutex>
-#include <queue>
-#include <semaphore>
-
 namespace dispatcher::queue {
 
-// здесь ваш код
+UnboundedQueue::UnboundedQueue() {}
 
-} // namespace dispatcher::queue
+void UnboundedQueue::push(std::function<void()> task) {
+    std::lock_guard<std::mutex> lk(mtx_);
+    queue_.push(std::move(task));
+}
+
+std::optional<UnboundedQueue::task> UnboundedQueue::try_pop() {
+    std::optional<UnboundedQueue::task> task;
+    {
+        std::lock_guard<std::mutex> lk(mtx_);
+
+        if (queue_.empty())
+            return task;
+        
+        task = std::move(queue_.front());
+        queue_.pop();
+    }
+    return task;
+}
+}  // namespace dispatcher::queue
