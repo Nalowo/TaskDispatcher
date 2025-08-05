@@ -4,6 +4,6 @@
 
 namespace dispatcher {
 
-enum class TaskPriority { High, Normal };
+enum class TaskPriority { High, Normal, Count};
 
 }  // namespace dispatcher
